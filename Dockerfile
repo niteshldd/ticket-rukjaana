@@ -18,14 +18,14 @@ RUN cp -R node_modules prod_node_modules
 RUN yarn install --production=false
 RUN yarn build
 RUN rm -rf node_modules && mv prod_node_modules node_modules
-RUN mdkir -p /usr/src/trudesk/public/uploads/users
+RUN mkdir -p /usr/src/trudesk/public/uploads/users
 
 FROM node:10.10-alpine
 WORKDIR /usr/src/trudesk
 RUN apk add --no-cache ca-certificates bash mongodb-tools fuse && rm -rf /tmp/*
 COPY --from=builder /usr/src/trudesk .
 COPY --from=gcsfuse /go/bin/gcsfuse /usr/local/bin
-
+RUN mkdir -p /usr/src/trudesk/public/uploads/users
 
 EXPOSE 8118
 
